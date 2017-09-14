@@ -20,7 +20,6 @@ from . import view
 urlpatterns = [
     url(r'^$', view.index, name='index'),
     url(r'^admin/', admin.site.urls),
-    url(r'^$', view.index, name='index'),
-    url(r'^getjson', view.getsjason, name='getjson'),
-    url(r'^getjson2', view.getsjason2, name='getjson2'),
+    url(r'^getjson$', view.getsjason, name='getjson'),
+    url(r'^getjson2$', view.getsjason2, name='getjson2'),
 ]
