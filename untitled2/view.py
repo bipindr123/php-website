@@ -37,7 +37,7 @@ def predict_price(dates, prices, dates2):
 
 def con():
     # Open the workbook and select the first worksheet
-    wb = xlrd.open_workbook('./myfile.xlsx')
+    wb = xlrd.open_workbook('/home/beagle/untitled2/myfile.xlsx')
     sh = wb.sheet_by_index(0)
 
     # List to hold dictionaries
@@ -63,7 +63,7 @@ def con():
     j = json.dumps(output)
 
     # Write to file
-    with open('data.json', 'w') as f:
+    with open('/home/beagle/untitled2/data.json', 'w') as f:
         f.write(j)
     finalai()
 
@@ -72,11 +72,11 @@ class mythread2(threading.Thread):
     def run(self):
         con()
         print("file changer  is running")
-        i = os.path.getmtime('./puthere/myfile.xlsx')
+        i = os.path.getmtime('/home/beagle/untitled2/myfile.xlsx')
         while (True):
-            if i != os.path.getmtime('./puthere/myfile.xlsx'):
+            if i != os.path.getmtime('/home/beagle/untitled2/myfile.xlsx'):
                 con()
-                i = os.path.getmtime('./puthere/myfile.xlsx')
+                i = os.path.getmtime('/home/beagle/untitled2/myfile.xlsx')
                 print("the file has changed")
             time.sleep(1)
 
@@ -87,7 +87,7 @@ def finalai():
     monthAsString = {1: 'Jan', 2: 'Feb', 3: 'Mar', 4: 'Apr', 5: 'May', 6: 'Jun',
                      7: 'Jul', 8: 'Aug', 9: 'Sept', 10: 'Oct', 11: 'Nov', 12: 'Dec'}
     output = {}
-    with open('data.json') as data_file:
+    with open('/home/beagle/untitled2/data.json') as data_file:
         data = json.load(data_file)
 
     flag = 0
@@ -132,11 +132,11 @@ def finalai():
     j = json.dumps(output)
 
     # Write to file
-    with open('data2.json', 'w') as f:
+    with open('/home/beagle/untitled2/data2.json', 'w') as f:
         f.write(j)
 
 def getsjason(request):
-    backup_path = "data.json"
+    backup_path = "/home/beagle/untitled2/data.json"
     response = HttpResponse(open(backup_path, 'r'), content_type='application/json; charset=utf8')
     response['Access-Control-Allow-Origin'] = '*'
     return response
@@ -144,23 +144,20 @@ def getsjason(request):
     #response = JsonResponse(dict(open(backup_path, 'r')))
 
 def getsjason2(request):
-    backup_path = "data2.json"
+    backup_path = "/home/beagle/untitled2/data2.json"
     response = HttpResponse(open(backup_path, 'r'), content_type='application/json; charset=utf8')
     response['Access-Control-Allow-Origin'] = '*'
     return response
 
 def index(request):
-    runthis()
     if request.method == 'POST' and request.FILES['myfile']:
+        os.remove("/home/beagle/untitled2/myfile.xlsx")
         myfile = request.FILES['myfile']
-        fs = FileSystemStorage()
-        filename = fs.save(myfile.name, myfile)
+        fs = FileSystemStorage("/home/beagle/untitled2/")
+        filename = fs.save("myfile.xlsx", myfile)
         uploaded_file_url = fs.url(filename)
         return render(request, 'index.html', {
             'uploaded_file_url': uploaded_file_url
         })
+    con()
     return render(request,'index.html')
-
-def runthis():
-    e = mythread2()
-    e.start()
