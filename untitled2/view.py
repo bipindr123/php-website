@@ -136,12 +136,18 @@ def finalai():
         f.write(j)
 
 def getsjason(request):
-    backup_path = "/home/beagle/untitled2/data.json"
-    return HttpResponse(open(backup_path, 'r'), content_type='application/json; charset=utf8').has_header('Access-Control-Allow-Origin', '*')
+    backup_path = "data.json"
+    response = HttpResponse(open(backup_path, 'r'), content_type='application/json; charset=utf8')
+    response['Access-Control-Allow-Origin'] = '*'
+    return response
+
+    #response = JsonResponse(dict(open(backup_path, 'r')))
 
 def getsjason2(request):
-    backup_path = os.path.join(".", "data2.json")
-    return HttpResponse(open(backup_path, 'r'), content_type='application/json; charset=utf8')
+    backup_path = "data2.json"
+    response = HttpResponse(open(backup_path, 'r'), content_type='application/json; charset=utf8')
+    response['Access-Control-Allow-Origin'] = '*'
+    return response
 
 def index(request):
     runthis()
